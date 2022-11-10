@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-var aboutMeSchema = new mongoose.Schema({
+var userSchema = new mongoose.Schema({
     header: {
         type: {type:String}
     },

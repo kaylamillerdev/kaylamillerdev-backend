@@ -7,11 +7,16 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mongoose = require('mongoose');
+const port = 3001;
+const hostname = 'localhost';
 
 var app = express();
 
+require('dotenv').config();
+
 // Adding in the mongoose stuff
-const uri = "mongodb+srv://dbuser:Password1!@firstcluster-qvuoq.mongodb.net/ProjectInfo?retryWrites=true&w=majority";
+/* const uri = "mongodb+srv://dbuser:Password1!@firstcluster-qvuoq.mongodb.net/ProjectInfo?retryWrites=true&w=majority"; */
+const uri = process.env.MONGO_CONNECTION;
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true});
 
 //on connection with Mongo
@@ -53,6 +58,12 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+
+
+app.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });
 
 module.exports = app;
