@@ -4,17 +4,37 @@ var mongoose = require('mongoose');
 var db = mongoose.connection;
 Project = require( '../models/project.model');
 Bio = require('../models/aboutMe.model');
+const defaultHandler = require('./functions/functions');
 
+router.get('/', function(req, res, next){
+  res.render('index', {title: "root"})
+});
 
 /* View the projects in the database */
 router.get('/recentProject', function(req, res, next){
-  db.collection("PortfolioProjects").find({})
-  .sort({$natural:-1}).limit(1)
+  db.collection("PortfolioProjects").find({}, {
+    sort:{
+      $natural:-1
+    },
+    limit: 1
+  })
   .toArray(function(err, results){
     console.log(results);
     res.send(results);
   })
 });
+
+/* async function getRecentProject(req, res, next){
+  
+}
+
+router.get('/recentProject', function(req, res){
+  const promise = db.collection("PortfolioProjects").find({}, {
+    sort:{ $natural: -1},
+    limit: 1
+  });
+  defaultHandler(promise, res);
+}); */
 
 /* View the projects in the database */
 router.get('/projectsList', function(req, res, next){
