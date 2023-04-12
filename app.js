@@ -8,12 +8,10 @@ const port = 3001;
 const hostname = 'localhost';
 
 require('env2')('config.env');
-var cors = require('cors');
-
-var indexRouter = require('./routes/index');
+const cors = require('cors');
 
 var app = express();
-app.use(cors());
+app.use(cors({ origin: 'https://kaylamiller.dev'}));
 
 // Adding in the mongoose stuff
 const { MONGO_CONNECTION } = process.env;
@@ -39,6 +37,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+var indexRouter = require('./routes/index');
 
 app.use('/', indexRouter);
 
