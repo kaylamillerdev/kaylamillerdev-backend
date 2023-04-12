@@ -13,6 +13,7 @@ var cors = require('cors');
 var indexRouter = require('./routes/index');
 
 var app = express();
+app.use(cors());
 
 // Adding in the mongoose stuff
 const { MONGO_CONNECTION } = process.env;
@@ -31,7 +32,7 @@ app.set('view engine', 'hbs');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 }); */
-app.use(cors());
+
 
 app.use(logger('dev'));
 app.use(express.json());
