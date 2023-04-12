@@ -3,36 +3,35 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
 var mongoose = require('mongoose');
 const port = 3001;
 const hostname = 'localhost';
 
+require('env2')('config.env');
+var cors = require('cors');
+
+var indexRouter = require('./routes/index');
+
 var app = express();
 
-require('dotenv').config();
-
 // Adding in the mongoose stuff
-/* const uri = "mongodb+srv://dbuser:Password1!@firstcluster-qvuoq.mongodb.net/ProjectInfo?retryWrites=true&w=majority"; */
-const uri = process.env.MONGO_CONNECTION;
-mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true});
-
-//on connection with Mongo
-mongoose.connection.on('connected', () => { console.log('MongoDB connected at port 27017')});
-
-//On connection error
-mongoose.connection.on('error', (err) => { console.log(err)});
+const { MONGO_CONNECTION } = process.env;
+mongoose.connect(MONGO_CONNECTION, {useNewUrlParser: true});
+const connection = mongoose.connection;
+connection.once('open', function() {
+  console.log('Connection to MongoDB established successfully!');
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.use(function(req, res, next) {
+/* app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
-});
+}); */
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());

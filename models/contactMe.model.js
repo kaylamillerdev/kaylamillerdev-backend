@@ -13,4 +13,6 @@ var contactMeSchema = new mongoose.Schema({
     message: {
         type: {type:String}
     }
-})
+});
+
+module.exports = mongoose.model('contactMe', contactMeSchema);

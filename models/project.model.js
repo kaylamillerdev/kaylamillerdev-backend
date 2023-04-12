@@ -1,16 +1,35 @@
 const mongoose = require('mongoose');
 
 var projectSchema = new mongoose.Schema({
-    projectTitle: {
-        type: {type: String}
+    name: {
+        type: String
     },
-    projectDescription: {
-        type: {type: String}
+    urlName: {
+        type: String
     },
-    projectLanguages: {
-        type: {type: String}
+    description: {
+        type: String
     },
-    projectGithubUrl: {
-        type: {type: String}
+    languages: {
+        type: Array
+    },
+    githubUrl: {
+        type: String
+    },
+    demoUrl: {
+        type: String
+    },
+    image: {
+        type: String
+    },
+    features: {
+        type: Array
+    },
+    featured: {
+        type: Boolean,
+        default: false
     }
-});
+},
+{collection: "PortfolioProjects"});
+
+module.exports = mongoose.model('Project', projectSchema);

@@ -7,4 +7,6 @@ var userSchema = new mongoose.Schema({
     bio: {
         type: {type:String}
     }
-});
+}, {collection: 'AboutMe'});
+
+module.exports = mongoose.model('user', userSchema);

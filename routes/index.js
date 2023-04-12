@@ -1,27 +1,21 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
-var db = mongoose.connection;
-Project = require( '../models/project.model');
+Project = require('../models/project.model');
 Bio = require('../models/aboutMe.model');
-const defaultHandler = require('./functions/functions');
 
 router.get('/', function(req, res, next){
   res.render('index', {title: "root"})
 });
 
 /* View the projects in the database */
-router.get('/recentProject', function(req, res, next){
-  db.collection("PortfolioProjects").find({}, {
-    sort:{
-      $natural:-1
-    },
-    limit: 1
+router.get('/featured', function(req, res, next){
+  Project.find({featured: true})
+  .then(results => {
+    if(results) {
+      res.json(results);
+    }
   })
-  .toArray(function(err, results){
-    console.log(results);
-    res.send(results);
-  })
+  .catch(err => console.log(err));
 });
 
 /* async function getRecentProject(req, res, next){
@@ -37,24 +31,37 @@ router.get('/recentProject', function(req, res){
 }); */
 
 /* View the projects in the database */
-router.get('/projectsList', function(req, res, next){
-  db.collection("PortfolioProjects").find({})
-  .toArray(function(err, results){
-    console.log(results);
-    res.send(results);
-  })
+router.get('/projectList', function(req, res, next){
+  Project.find({})
+  .then(projectList => {
+    if(projectList){
+      res.json(projectList)
+    } else {
+      res.send('No projects found!');
+    }
+  }).catch(err => console.log(err));
 });
 
   // view the bio
-  router.get('/findBio', function(req, res, next){
-    db.collection("AboutMe").find({})
-    .toArray(
-      function(err, results) {
-        console.log(results);
-        res.send(results);
+  router.get('/about', function(req, res, next){
+    Bio.find({})
+    .then(bio => {
+      if(bio) {
+        res.json(bio)
       }
-    )
+    }).catch(err => console.log(err));
   });
+
+  router.get('/projects/:urlName', function(req, res, next){
+    Project.find({urlName: req.params.urlName})
+    .then(project => {
+      if(project){
+        res.json(project);
+      } else {
+        res.send("No project found based on: " + req.params.urlName);
+      }
+    }).catch(err => console.log(err));
+  })
 
 /*   router.post('/contactForm', function(req, res, next) {
     db.collection("ContactInfo").insertOne({
