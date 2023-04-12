@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const cors = require('cors');
 Project = require('../models/project.model');
 Bio = require('../models/aboutMe.model');
 
