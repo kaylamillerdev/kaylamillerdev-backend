@@ -36,8 +36,6 @@ router.get('/projectList', function(req, res, next){
   .then(projectList => {
     if(projectList){
       res.json(projectList)
-    } else {
-      res.send('No projects found!');
     }
   }).catch(err => console.log(err));
 });
@@ -52,13 +50,11 @@ router.get('/projectList', function(req, res, next){
     }).catch(err => console.log(err));
   });
 
-  router.get('/projects/:urlName', function(req, res, next){
+  router.get('/projects/:urlName', cors(), function(req, res, next){
     Project.find({urlName: req.params.urlName})
     .then(project => {
       if(project){
         res.json(project);
-      } else {
-        res.send("No project found based on: " + req.params.urlName);
       }
     }).catch(err => console.log(err));
   })
