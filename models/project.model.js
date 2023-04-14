@@ -28,6 +28,9 @@ var projectSchema = new mongoose.Schema({
     featured: {
         type: Boolean,
         default: false
+    },
+    ribbonText: {
+        type: String
     }
 },
 {collection: "PortfolioProjects"});
